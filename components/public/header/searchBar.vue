@@ -6,26 +6,16 @@
         </el-col>
         <el-col :span="15" class="center">
           <div class="wrapper">
-            <el-input placeholder="搜索商家或地点"></el-input>
-            <button class="el-button el-button-primary">
+            <el-input  v-model="search" placeholder="搜索商家或地点" @focus="isFocus=true" @blur="blur"></el-input>
+            <button class="el-button el-button--primary">
               <i class="el-icon-search"></i>
             </button>
-            <dl class="hotplace" v-show="false">
+            <dl class="hotPlace" v-show="isHotplace">
               <dt>热门搜索</dt>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
+              <dd v-for="(item,idx) in hotPlace" :key="idx">{{item}}</dd>
             </dl>
-            <dl class="searchList" v-show="false">
-              <dd>火锅</dd>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
-              <dd>火锅</dd>
+            <dl class="searchList" v-show="isSearchList">
+              <dd v-for="(item,idx) in searchList" :key="idx">{{item}}</dd>
             </dl>
           </div>
           <p class="suggset">
@@ -70,11 +60,30 @@
 export default {
   data() {
     return {
-
+      search: '',
+      isFocus: false,
+      hotPlace: ['故宫', '天安门', '长城'],
+      searchList: ['火锅', '小龙虾', '酸菜鱼']
     }
   },
   components: {
 
+  },
+  computed: {
+    isHotplace() {
+      return this.isFocus && !this.search
+    },
+    isSearchList() {
+      return this.isFocus && this.search
+    }
+  },
+  methods: {
+    blur() {
+      let _this = this
+      setTimeout(()=> {
+        _this.isFocus=false
+      },200)
+    }
   }
 }
 </script>
