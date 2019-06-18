@@ -37,6 +37,7 @@ module.exports = {
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios'
   ],
   /*
   ** Build configuration
@@ -48,6 +49,8 @@ module.exports = {
     */
     extend(config, ctx) {
     },
+
+    // https://github.com/nuxt/nuxt.js/issues/3804
     cache: false
   }
 }
