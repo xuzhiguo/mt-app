@@ -37,7 +37,7 @@ const store = () => new Vuex.Store({
         // 获取热门景点推荐
         const {status, data} = await app.$axios.get('/search/hotPlace', {
           params: {
-            city: app.store.state.geo.position.city.replace('市', '')
+            city: app.store.state.geo.position.city?app.store.state.geo.position.city.replace('市', ''): '广州'
           }
         })
         

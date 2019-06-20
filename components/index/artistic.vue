@@ -3,7 +3,7 @@
     <dl>
       <dt>有格调</dt>
       <dd v-for="(item, idx) in menuList" :class="{active:kind=== item.kind}"
-        @mouseover="over(item.keyword)" :key="idx">{{item.name}}</dd>
+        @mouseover="over(item.kind, item.keyword)" :key="idx">{{item.name}}</dd>
     </dl>
     <ul class="ibody">
       <li
@@ -18,10 +18,14 @@
           <ul class="cbody">
             <li class="title">{{ item.title }}</li>
             <li class="pos"><span>{{ item.pos }}</span></li>
-            <li class="price">￥<em>{{ item.price }}</em><span>/起</span></li>
+            <li class="price" v-if="item.price>0">￥<em>{{ item.price }}</em><span>/起</span></li>
+            <li class="price" v-else>暂无价格</li>
           </ul>
         </el-card>
       </li>
+      <div v-show="cur.length == 0" style="text-align:center;width:100%">
+        暂无相关推荐
+      </div>
     </ul>
   </section>
 </template>
@@ -52,20 +56,52 @@ export default {
     }
   },
   async mounted(){
-    
+    let _this = this;
+    let {status, data: {count, pois}} = await _this.$axios.get('/search/resultsByKeywords', {
+      params: {
+        city: _this.$store.state.geo.position.city,
+        keyword: '景点'
+      }
+    })
+
+    if(status === 200  && typeof count === 'number' && count > 0) {
+      //过滤没图的，构建对应数据结构
+      this.list.all = pois.filter((item) => item.photos.length).slice(0,6).map((item) => {
+        return {
+          title: item.name,
+          img: item.photos[0].url,
+          pos: item.type.split(';')[0],
+          price: typeof item.biz_ext.cost === 'string'?item.biz_ext.cost:0
+        }
+      })
+    }
   },
   methods: {
-    over: async (keyword) => {
-      let _this = this;
+    over: async function(kind, keyword) {
+      let _this = this
+      this.kind = kind
+
+      if(this.list[kind].length > 0) {
+        return
+      }
+
       let {status, data: {count, pois}} = await _this.$axios.get('/search/resultsByKeywords', {
         params: {
           city: _this.$store.state.geo.position.city,
           keyword
         }
       })
-      
+
       if(status === 200  && typeof count === 'number' && count > 0) {
-        this.list = pois
+        //过滤没图的，构建对应数据结构
+        this.list[kind] = pois.filter((item) => item.photos.length).slice(0,6).map((item) => {
+          return {
+            title: item.name,
+            img: item.photos[0].url,
+            pos: item.type.split(';')[0],
+            price: typeof item.biz_ext.cost === 'string'?item.biz_ext.cost:0
+          }
+        })
       }
     }
   },
