@@ -1,27 +1,9 @@
 <template>
   <section class="m-istyle">
-    <dl @mouseover="over">
+    <dl>
       <dt>有格调</dt>
-      <dd
-        :class="{active:kind==='all'}"
-        kind="all"
-        keyword="景点">全部</dd>
-      <dd
-        :class="{active:kind==='part'}"
-        kind="part"
-        keyword="美食">约会聚餐</dd>
-      <dd
-        :class="{active:kind==='spa'}"
-        kind="spa"
-        keyword="丽人">丽人SPA</dd>
-      <dd
-        :class="{active:kind==='movie'}"
-        kind="movie"
-        keyword="电影">电影演出</dd>
-      <dd
-        :class="{active:kind==='travel'}"
-        kind="travel"
-        keyword="旅游">品质出游</dd>
+      <dd v-for="(item, idx) in menuList" :class="{active:kind=== item.kind}"
+        @mouseover="over(item.keyword)" :key="idx">{{item.name}}</dd>
     </dl>
     <ul class="ibody">
       <li
@@ -48,6 +30,13 @@ export default {
   data: () => {
     return {
       kind: 'all',
+      menuList: [
+        {name: '全部', kind: 'all', keyword: '景点'},
+        {name: '约会聚餐', kind: 'part', keyword: '美食'},
+        {name: '丽人SPA', kind: 'spa', keyword: '丽人'},
+        {name: '电影演出', kind: 'movie', keyword: '电影'},
+        {name: '品质出游', kind: 'travel', keyword: '旅游'}
+      ],
       list: {
         all: [],
         part: [],
@@ -66,8 +55,18 @@ export default {
     
   },
   methods: {
-    over: async function (e) {
+    over: async (keyword) => {
+      let _this = this;
+      let {status, data: {count, pois}} = await _this.$axios.get('/search/resultsByKeywords', {
+        params: {
+          city: _this.$store.state.geo.position.city,
+          keyword
+        }
+      })
       
+      if(status === 200  && typeof count === 'number' && count > 0) {
+        this.list = pois
+      }
     }
   },
 
