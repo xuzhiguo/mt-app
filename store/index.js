@@ -15,12 +15,12 @@ const store = () => new Vuex.Store({
     async nuxtServerInit({commit}, {req, app}) {
       {
         // 获取城市定位
-        const {status, data: {province, city, ip}} = await app.$axios.get('/geo/getPosition')
+        const {status, data: {province, city}} = await app.$axios.get('/geo/getPosition')
       
         if(status === 200) {
-          commit('geo/setPosition', {province, city, ip})
+          commit('geo/setPosition', {province, city})
         } else {
-          commit('geo/setPosition', {province:'', city: '', ip: ''})
+          commit('geo/setPosition', {province:'', city: ''})
         }
       }
 

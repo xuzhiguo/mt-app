@@ -14,7 +14,7 @@
           <span>账号登录</span>
         </p>
         <el-input v-model="username" prefix-icon="profile" />
-        <el-input v-model="password" prefix-icon="password" type="password" />
+        <el-input v-model="password" prefix-icon="password" type="password" @keyup.enter.native="login" />
         <div class="foot">
           <el-checkbox v-model="checked">7天内自动登录</el-checkbox>
           <b>忘记密码？</b>
@@ -38,21 +38,21 @@ export default {
   },
   layout: 'blank',
   methods: {
-    login: function () {
-      this.$axios.post('/users/signin', {
+    login: async function () {
+      let {status, data} = await this.$axios.post('/users/signin', {
         username: this.username,
         password: CryptoJS.MD5(this.password).toString()
-      }).then(({status, data}) => {
-        if(status === 200) {
-          if(data&&data.code === 0) {
-            location.href = '/'
-          } else {
-            this.error = data.msg
-          }
-        } else {
-          this.error = '服务器有点累，请稍后再试~'
-        }
       })
+
+      if(status === 200) {
+        if(data && data.code === 0) {
+          this.$router.push('/')
+        } else {
+          this.error = data.msg
+        }
+      } else {
+        this.error = '服务器有点累，请稍后再试~'
+      }
     }
   }
 }
