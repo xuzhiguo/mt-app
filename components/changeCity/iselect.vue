@@ -98,7 +98,6 @@ export default {
       // 监听省份，变化时重新获取城市
       let {status, data} = await _this.$axios.get(`/geo/province/${newValue}`)
 
-      console.log(data)
       if(status === 200 && data.value) {
         this.city = data.value.map((item) => {
           return {

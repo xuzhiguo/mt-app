@@ -2,7 +2,7 @@
   <div class="m-hcity">
     <dl>
       <dt>热门城市：</dt>
-      <dd v-for="(item,idx) in list" @click="setCity(item)">{{item | nameFt}}</dd>
+      <dd v-for="(item,idx) in list" @click="setCity(item)" :key="idx">{{item | nameFt}}</dd>
     </dl>
   </div>
 </template>
