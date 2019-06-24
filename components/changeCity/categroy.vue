@@ -10,7 +10,7 @@
     <dl class="m-categroy-section" v-for="item in block" :key="item.title">
       <dt :id="`city-${item.title}`">{{item.title}}</dt>
       <dd>
-        <span v-for="c in item.list" :key="c.city" @click="setPersition(c)">{{c.city}}</span>
+        <span v-for="c in item.list" :key="c.city" @click="setPosition(c)">{{c.city}}</span>
       </dd>
     </dl>
   </div>
@@ -64,7 +64,7 @@ export default {
     }
   },
   methods: {
-    setPersition(data) {
+    setPosition(data) {
       this.$store.commit('geo/setPosition', data)
       this.$router.push('/')
     }
