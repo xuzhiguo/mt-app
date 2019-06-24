@@ -1,6 +1,6 @@
 <template>
   <el-container class="layout-default">
-    <el-header height="197px">
+    <el-header class="layout-header" :height="h">
       <my-header />
     </el-header>
     <el-main>
@@ -19,6 +19,13 @@ export default {
   components: {
     MyHeader,
     MyFooter
+  },
+  computed: {
+    h() {
+      let rt = this.$route.name
+
+      return rt==='index'?'197px':'157px';
+    }
   }
 }
 </script>

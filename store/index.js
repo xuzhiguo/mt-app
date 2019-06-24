@@ -12,7 +12,7 @@ const store = () => new Vuex.Store({
   },
   actions: {
     // nuxt 生命周期钩子
-    async nuxtServerInit({commit}, {req, app}) {
+    async nuxtServerInit({commit}, {app, store}) {
       {
         // 获取城市定位
         const {status, data: {province, city}} = await app.$axios.get('/geo/getPosition')
