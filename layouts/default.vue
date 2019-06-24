@@ -23,7 +23,7 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
   @import "@/assets/css/public/layout.scss";
 </style>
 
