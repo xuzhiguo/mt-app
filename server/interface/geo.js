@@ -18,7 +18,7 @@ router.get('/getPosition', async (ctx) => {
       province,
       city
     }
-  } = await axios.get(`http://cp-tools.cn/geo/getPosition?sign=${sign}`)
+  } = await axios.get(`/geo/getPosition?sign=${sign}`)
 
   if (status === 200) {
     ctx.body = {
@@ -53,7 +53,25 @@ router.get('/province/:id', async (ctx) => {
 // 获取全国所有城市
 router.get('/city', async (ctx) => {
   let city = await City.find()
-  ctx.body = city
+
+  let list = []
+  city.forEach((item) => {
+      item.value.forEach((e) => {
+        /**
+         * 如果是 省直辖县级行政区划 就算了.........
+         * 这个 cities.dat 有点坑爹，居然有这种数据zzzzzz...
+         * {province:'河北省',name:'省直辖县级行政区划',id:139000}
+         */
+        if(e.name !== '省直辖县级行政区划') {
+          list.push({
+            city: e.name === '市辖区'?e.province:e.name,
+            province: e.province
+          })
+        }
+      })
+  });
+
+  ctx.body = list
 })
 
 // 获取热门城市

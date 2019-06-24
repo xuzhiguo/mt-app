@@ -20,7 +20,7 @@ router.get('/pois', async (ctx) => {
 
     // 通过查在线接口拿数据
     try {
-      let {status, data: {top}} = await axios.get('http://cp-tools.cn/search/top', {
+      let {status, data: {top}} = await axios.get('/search/top', {
         params: {
           input: ctx.query.input,
           city: ctx.query.city,
@@ -49,24 +49,31 @@ router.get('/pois', async (ctx) => {
 router.get('/hotPlace', async (ctx) => {
   let city = ctx.query.city
 
-  let {status, data: {result}} = await axios.get('http://cp-tools.cn/search/hotPlace', {
-    params: {
-      city,
-      sign
-    }
-  })
+  try {
+    let {status, data: {result}} = await axios.get('/search/hotPlace', {
+      params: {
+        city,
+        sign
+      }
+    })
 
-  if(status === 200) {
-    ctx.body = result
-  } else {
-    ctx.body = []
+    if(status === 200) {
+      ctx.body = result
+    } else {
+      ctx.body = []
+    }
+  } catch (error) {
+    ctx.body = {
+      status: 500,
+      msg: '服务器有点累，请稍后重试~'
+    }
   }
 })
 
 // 获取首页有格调列表
 router.get('/resultsByKeywords', async (ctx) => {
   let {city, keyword} = ctx.query
-  let {status, data} = await axios.get('http://cp-tools.cn/search/resultsByKeywords', {
+  let {status, data} = await axios.get('/search/resultsByKeywords', {
     params: {
       city,
       keyword,

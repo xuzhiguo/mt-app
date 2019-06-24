@@ -15,6 +15,11 @@
         <visited />
       </el-col>
     </el-row>
+    <el-row>
+      <el-col>
+        <categroy />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -22,6 +27,7 @@
 import Iselect from '../components/changeCity/iselect'
 import Hot from '../components/changeCity/hot'
 import Visited from '../components/changeCity/visited'
+import Categroy from '../components/changeCity/categroy'
 
 export default {
   data() {
@@ -32,7 +38,8 @@ export default {
   components: {
     Iselect,
     Hot,
-    Visited
+    Visited,
+    Categroy
   }
 }
 </script>

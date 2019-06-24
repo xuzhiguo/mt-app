@@ -50,14 +50,12 @@ export default {
         let {status, data} = await _this.$axios.get('/geo/city')
         
         if(status === 200) {
-          data.forEach((item) => {
-            item.value.forEach((e) => {
-              _this.cityList.push({
-                value: e.name === '市辖区'?e.province:e.name,
-                province: e.province
-              })
-            })
-          });
+          this.cityList = data.map((item) => {
+            return {
+              value: item.city,
+              province: item.province
+            }
+          })
 
           let result = this.cityList.filter((item) => {
               return item.value.indexOf(query) > -1 || _this.changePinyin(item.value).indexOf(query.toUpperCase()) > -1

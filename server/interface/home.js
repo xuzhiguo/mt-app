@@ -9,10 +9,17 @@ const router = new Router({
 })
 
 router.get('/menu', async (ctx) => {
-  let {status, data: {menu}} = await axios.get(`http://cp-tools.cn/geo/menu?sign=${sign}`)
-  if(status === 200) {
+  try {
+    let {status, data: {menu}} = await axios.get(`/geo/menu?sign=${sign}`)
+    if(status === 200) {
+      ctx.body = {
+        menu
+      }
+    }
+  } catch (error) {
     ctx.body = {
-      menu
+      status: 500,
+      msg: error
     }
   }
 })
