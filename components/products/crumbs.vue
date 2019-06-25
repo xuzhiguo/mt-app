@@ -1,8 +1,12 @@
 <template>
   <div class="m-crumbs">
-    <el-breadcrumb separator=">">
-      <el-breadcrumb-item :to="{ path: '/' }">{{ $store.state.geo.position.city.replace('市','') }}美团</el-breadcrumb-item>
-      <el-breadcrumb-item><a href="/">{{ $store.state.geo.position.city.replace('市','') }}{{ decodeURIComponent(keyword) }}</a></el-breadcrumb-item>
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb-item>
+        <nuxt-link to="/">
+          {{ $store.state.geo.position.city.replace('市','') }}美团
+        </nuxt-link>
+      </el-breadcrumb-item>
+      <el-breadcrumb-item>{{ $store.state.geo.position.city.replace('市','') }}{{ decodeURIComponent(keyword) }}</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
 </template>

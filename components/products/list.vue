@@ -1,15 +1,18 @@
 <template>
-  <div class="m-products-list">
+  <div class="m-products-list" id="m-products-list">
     <dl>
-      <dd v-for="item in nav" :key="item.name" :class="[item.name,item.acitve?'s-nav-active':'']" @click="navSelect">{{ item.txt }}</dd>
+      <dd v-for="(item,idx) in nav" :key="item.name" :class="[item.name,item.acitve?'s-nav-active':'']" @click="navSelect(idx)">{{ item.txt }}</dd>
     </dl>
     <ul>
-      <Item v-for="(item,idx) in list" :key="idx" :meta="item" />
+      <Item v-for="(item,idx) in copyList[activeIndex]" :key="idx" :meta="item" />
     </ul>
   </div>
 </template>
 
 <script>
+let oTop      
+const iHeight = 170   // 列表项的高度
+
 import Item from './product.vue'
 export default {
   components: {
@@ -43,7 +46,9 @@ export default {
           txt: '评价最高',
           active: false
         }
-      ]
+      ],
+      copyList: [],
+      oIndex: 0
     }
   },
   async asyncData({ app }) {
@@ -51,9 +56,59 @@ export default {
     return { items: data.list }
   },
   methods: {
-    navSelect: function () {
-      console.log('select')
+    navSelect(idx) {
+      this.nav = this.nav.map((item, i) => {
+        if(idx === i) {
+          item.acitve = true
+        } else {
+          item.acitve = false
+        }
+
+        return item
+      })
+    },
+    handleScroll() {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+
+      // list距离顶部的距离 1个 list项的高度为 170px
+      console.log(oTop)
+      console.log(scrollTop)
+
+    }
+  },
+  mounted() {
+    // 模拟数据返回的价格都是 0，为了看起来好看点，用随机数来填充
+    let list = this.list.map((item) => {
+      item.price = item.price === 0?parseInt(Math.random()*100):item.price
+      return item
+    })
+
+    // 默认列表
+    this.copyList.push(list)
+  
+    // 价格最低
+    this.copyList.push(copyArr(list).sort((a,b) => a.price - b.price))
+
+    // 人气最高
+    this.copyList.push(copyArr(list).sort((a,b) => b.comment - a.comment))
+
+    // 评价最高
+    this.copyList.push(copyArr(list).sort((a,b) => b.rate - a.rate))
+
+    // 列表距离顶部的距离 + 头部的高度
+    oTop = document.querySelector('#m-products-list').offsetTop + 157
+
+    // 地图相关，监听滚动
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  computed: {
+    activeIndex() {
+      return this.nav.findIndex(item => item.acitve)
     }
   }
+}
+
+function copyArr(arr) {
+  return JSON.parse(JSON.stringify(arr))
 }
 </script>

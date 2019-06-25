@@ -14,16 +14,26 @@
             </button>
             <dl class="hotPlace" v-show="isHotplace">
               <dt>热门搜索</dt>
-              <dd v-for="(item,idx) in hotPlace.slice(0,4)" :key="idx">{{item.name}}</dd>
+              <dd v-for="(item,idx) in hotPlace.slice(0,4)" :key="idx">
+                <nuxt-link :to="`/products?keyword=${encodeURIComponent(item.name)}`">
+                  {{item.name}}
+                </nuxt-link>
+              </dd>
             </dl>
             <dl class="searchList" v-show="isSearchList">
-              <dd v-for="(item,idx) in searchList" :key="idx">{{item.name}}</dd>
+              <dd v-for="(item,idx) in searchList" :key="idx">
+                <nuxt-link :to="`/products?keyword=${encodeURIComponent(item.name)}`">
+                  {{item.name}}
+                </nuxt-link>
+              </dd>
             </dl>
           </div>
           <p class="suggest">
-            <a href="#" v-for="(item,idx) in hotPlace.slice(0,4)" :key="idx">{{item.name}}</a>
+            <nuxt-link :to="`/products?keyword=${encodeURIComponent(item.name)}`"  v-for="(item,idx) in hotPlace.slice(0,4)" :key="idx">
+              {{item.name}}
+            </nuxt-link>
           </p>
-          <ul class="nav">
+          <ul class="nav" v-if="isHome">
             <li><nuxt-link to="/mt" class="takeout">美团外卖</nuxt-link></li>
             <li><nuxt-link to="/mt" class="movie">猫眼电影</nuxt-link></li>
             <li><nuxt-link to="/mt" class="hotel">美团酒店</nuxt-link></li>
@@ -78,6 +88,9 @@ export default {
     },
     hotPlace() {
       return this.$store.state.home.hotPlace
+    },
+    isHome() {
+      return this.$route.name==='index'
     }
   },
   methods: {

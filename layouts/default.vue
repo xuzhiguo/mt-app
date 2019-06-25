@@ -1,6 +1,6 @@
 <template>
   <el-container class="layout-default">
-    <el-header class="layout-header" :height="h">
+    <el-header class="layout-header" :class="{'home': $route.name==='index'}" :height="h">
       <my-header />
     </el-header>
     <el-main>
