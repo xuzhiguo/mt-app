@@ -5,7 +5,7 @@
     </dt>
     <dd>
       <h3>
-        <nuxt-link :to="{path:'detail',query:{keyword:meta.name,type:meta.module}}">{{ meta.name }}</nuxt-link>
+        <nuxt-link :to="{path:'detail',query:{keyword:encodeURIComponent(meta.name),type:encodeURIComponent(meta.module),prevword:queryWord}}">{{ meta.name }}</nuxt-link>
       </h3>
       <el-rate v-model="meta.rate" :colors="['#ff9900', '#ff9900', '#FF9900']" disabled/>
       <span v-if="meta.rate>4" class="s-item-comment">很好</span>
@@ -47,6 +47,11 @@ export default {
       default() {
         return {}
       }
+    }
+  },
+  computed: {
+    queryWord() {
+      return this.$route.query.keyword
     }
   }
 }

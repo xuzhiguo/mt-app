@@ -1,6 +1,13 @@
 .page-detail{
     .m-crumbs {
         margin: 20px 0;
+        a {
+          color: #333;
+          font-weight: 500;
+          &:hover {
+            color: #13D1BE;
+          }
+        }
     }
     .m-sum-card {
       display: flex;

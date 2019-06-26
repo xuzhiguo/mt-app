@@ -15,21 +15,22 @@
             <dl class="hotPlace" v-show="isHotplace">
               <dt>热门搜索</dt>
               <dd v-for="(item,idx) in hotPlace.slice(0,4)" :key="idx">
-                <nuxt-link :to="`/products?keyword=${encodeURIComponent(item.name)}`">
+                <nuxt-link :to="{path:`/products`,query:{keyword:encodeURIComponent(item.name)}}">
                   {{item.name}}
                 </nuxt-link>
               </dd>
             </dl>
             <dl class="searchList" v-show="isSearchList">
               <dd v-for="(item,idx) in searchList" :key="idx">
-                <nuxt-link :to="`/products?keyword=${encodeURIComponent(item.name)}`">
+                <nuxt-link :to="{path:`/products`,query:{keyword:encodeURIComponent(item.name)}}">
                   {{item.name}}
                 </nuxt-link>
               </dd>
             </dl>
           </div>
           <p class="suggest">
-            <nuxt-link :to="`/products?keyword=${encodeURIComponent(item.name)}`"  v-for="(item,idx) in hotPlace.slice(0,4)" :key="idx">
+            <nuxt-link :to="{path:`/products`,query:{keyword:encodeURIComponent(item.name)}}"
+              v-for="(item,idx) in hotPlace.slice(0,4)" :key="idx">
               {{item.name}}
             </nuxt-link>
           </p>

@@ -88,4 +88,43 @@ router.get('/resultsByKeywords', async (ctx) => {
   }
 })
 
+router.get('/products', async (ctx) => {
+  let keyword = ctx.query.keyword
+  let city = ctx.query.city
+
+  let {status, data:{product, more}} = await axios.get('/search/products', {
+    params: {
+      keyword,
+      city,
+      sign
+    }
+  })
+
+  if(status === 200) {
+    more.map((item) => {
+      // 把 more 中没图片的数据，赋默认图
+      item.photos = item.photos.length === 0? [{url:'http://p0.meituan.net/codeman/ae846a35c5f42565206c3c7b47be3a5310601.png'}]:item.photos
+      item.biz_ext.ticket_ordering = item.biz_ext.ticket_ordering?item.biz_ext.ticket_ordering: Math.ceil(Math.random()*100) + 10
+      item.biz_ext.cost = typeof item.biz_ext.cost === 'number' && item.biz_ext.cost>0 ?item.biz_ext.cost: Math.ceil(Math.random()*200) + 50
+      item.biz_ext.mcost = item.biz_ext.cost + Math.ceil(Math.random()*50)
+
+      return item
+    })
+
+    ctx.body = {
+      product,
+      // 不登录才返回空
+      more: ctx.isAuthenticated() ? more : [],
+      login: ctx.isAuthenticated()
+    }
+  } else {
+    ctx.body = {
+      product: {},
+      more: [],
+      login: ctx.isAuthenticated()
+    }
+  }
+
+})
+
 export default router
