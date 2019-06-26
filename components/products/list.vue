@@ -71,8 +71,31 @@ export default {
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 
       // list距离顶部的距离 1个 list项的高度为 170px
-      console.log(oTop)
-      console.log(scrollTop)
+      // console.log(oTop)
+      // console.log(scrollTop)
+      
+      // 当滚动距离到达第一个的高度时，才开始切换
+      if(scrollTop > oTop) {
+        this.oIndex = Math.ceil((scrollTop - oTop) / iHeight)
+        this.$emit('changeIsTop', true)
+        
+        let list = this.copyList[this.activeIndex][this.oIndex]
+        if(list) {
+          let point = list.location
+          this.$emit('changePoint', point)
+        } else {
+          // 高度已经大于列表，隐藏地图
+          this.$emit('changeIsTop', false)
+        }
+
+      } else {
+        // 小于则显示第一个的坐标
+        this.oIndex = 0
+        this.$emit('changeIsTop', false)
+        
+        let point = this.copyList[this.activeIndex][0].location
+        this.$emit('changePoint', point)
+      }
 
     }
   },
@@ -104,6 +127,12 @@ export default {
   computed: {
     activeIndex() {
       return this.nav.findIndex(item => item.acitve)
+    }
+  },
+  watch: {
+    activeIndex(newVal) {
+      let point = this.copyList[newVal][0].location
+      this.$emit('changePoint', point)
     }
   }
 }

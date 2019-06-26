@@ -3,10 +3,10 @@
     <el-col :span="19">
       <crumbs :keyword="keyword" />
       <categroy :types="types" :areas="areas" />
-      <list :list="list" :changePoint="changePoint" />
+      <list :list="list" @changePoint="changePoint" @changeIsTop="changeIsTop" />
     </el-col>
-    <el-col :span="5">
-      <cmap v-if="point.length" :width="230" :height="290" :point="point" />
+    <el-col :span="5" :class="{'isTop':isTop}">
+      <cmap v-if="point.length" :width="230" :height="230" :point="point" />
     </el-col>
   </el-row>
 </template>
@@ -32,7 +32,8 @@ export default {
       areas: [],
       list: [],
       keyword: '',
-      point: []
+      point: [],
+      isTop: false
     }
   },
   async asyncData({query, store, $axios}) {
@@ -80,6 +81,9 @@ export default {
   methods: {
     changePoint(location) {
       this.point = location.split(',')
+    },
+    changeIsTop(flag) {
+      this.isTop = flag
     }
   }
 }

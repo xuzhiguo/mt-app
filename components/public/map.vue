@@ -39,7 +39,7 @@ export default {
     window.onmaploaded = () => {
       let map = new window.AMap.Map(self.id, {
         resizeEnable: true,
-        zoom: 11,
+        zoom: 18,
         center: self.point
       })
       self.map = map
