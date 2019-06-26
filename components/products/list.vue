@@ -71,9 +71,6 @@ export default {
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 
       // list距离顶部的距离 1个 list项的高度为 170px
-      // console.log(oTop)
-      // console.log(scrollTop)
-      
       // 当滚动距离到达第一个的高度时，才开始切换
       if(scrollTop > oTop) {
         this.oIndex = Math.ceil((scrollTop - oTop) / iHeight)
