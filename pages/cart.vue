@@ -17,7 +17,6 @@
 
 <script>
 import List from '../components/cart/list'
-import { async } from 'q';
 
 export default {
   components: {

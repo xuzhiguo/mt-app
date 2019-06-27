@@ -22,6 +22,10 @@ const Order = new Schema({
     type: Number,
     require: true
   },
+  count: {
+    type: Number,
+    require: true
+  },
   name: {
     type: String,
     require: true

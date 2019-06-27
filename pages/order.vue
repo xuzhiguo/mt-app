@@ -106,12 +106,13 @@ export default {
   async asyncData(ctx) {
     let {status, data: {code,list}} = await ctx.$axios.post('/order/getOrder')
 
+    console.log(list)
     if(status === 200 && code === 0) {
       let data = list.map(item => {
         return {
           img: item.images.length?item.images[0].url:'./logo.png',
           name: item.name,
-          count: 1,
+          count: item.count,
           total: item.total,
           status: item.status,
           statusText: item.status===0?'待付款': '已付款'

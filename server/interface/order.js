@@ -36,6 +36,7 @@ router.post('/create', async (ctx) => {
       total: count * price,
       images: cartInfo.detail[0].imgs,
       name: cartInfo.detail[0].name,
+      count,
       time,
       status: 0
     })
