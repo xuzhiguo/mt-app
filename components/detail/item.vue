@@ -52,7 +52,7 @@ export default {
         }
       })
       if (status === 200 && code === 0) {
-        window.location.href = `/cart/?id=${id}`
+        this.$router.push(`/cart/?id=${id}`)
       } else {
         console.log('error')
       }

@@ -35,19 +35,21 @@ router.post('/signup', async (ctx) => {
           code: -1,
           msg: '验证码已过期，请重新获取'
         }
-        return false
+        return
       }
     } else {
       ctx.body = {
         code: -1,
         msg: '请填写正确的验证码'
       }
+      return
     }
   } else {
     ctx.body = {
       code: -1,
       msg: '请填写验证码'
     }
+    return
   }
 
   // 验证用户名
