@@ -28,8 +28,10 @@ export default {
   },
   watch: {
     point: function (val, old) {
-      this.map.setCenter(val)
-      this.marker.setPosition(val)
+      if(this.map) {
+        this.map.setCenter(val)
+        this.marker.setPosition(val)
+      }
     }
   },
   mounted() {

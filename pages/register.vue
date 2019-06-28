@@ -151,7 +151,8 @@ export default {
           _this.$axios.post('/users/signup', {
             username: window.encodeURIComponent(form.name),
             password: CryptoJs.MD5(form.pwd).toString(),
-            email: form.email
+            email: form.email,
+            code: form.code
           }).then(({status, data}) => {
             if(status === 200) {
               // 注册成功，跳转到登录页

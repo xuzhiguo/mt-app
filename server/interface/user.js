@@ -28,6 +28,7 @@ router.post('/signup', async (ctx) => {
     const saveCode = await Store.hget(`nodemail:${username}`, 'code')
     // 从 redis 中取出 过期时间
     const saveExpire = await Store.hget(`nodemail:${username}`, 'expire')
+    console.log('----------------' + saveCode)
 
     if(code === saveCode) {
       if(new Date().getTime - saveExpire > 0) {
@@ -74,23 +75,37 @@ router.post('/signup', async (ctx) => {
   })
 
   // 入库成功，自动登录
-  if(nuser) {
-    let res = await axios.post('/users/signin', {
-      username,
-      password
-    })
+  // if(nuser) {
+  //   let res = await axios.post('/users/signin', {
+  //     username,
+  //     password
+  //   })
+    
+  //   console.log(username, res.data)
+  //   if(res.data && res.data.code === 0) {
+  //     ctx.body = {
+  //       code: 0,
+  //       msg: '注册成功',
+  //       user: res.data.user
+  //     }
+  //   } else {
+  //     ctx.body = {
+  //       code: -2,
+  //       msg: '注册成功，自动登录失败'
+  //     }
+  //   }
+  // } else {
+  //   ctx.body = {
+  //     code: -1,
+  //     msg: '注册失败'
+  //   }
+  // }
 
-    if(res.data && res.data.code === 0) {
-      ctx.body = {
-        code: 0,
-        msg: '注册成功',
-        user: res.data.user
-      }
-    } else {
-      ctx.body = {
-        code: -1,
-        msg: 'error'
-      }
+  console.log(nuser)
+  if(nuser) {
+    ctx.body = {
+      code: 0,
+      msg: '注册成功'
     }
   } else {
     ctx.body = {
@@ -177,7 +192,7 @@ router.post('/verify', async (ctx, next) => {
       return console.log('邮件发送失败');
     } else {
       // 存到 redis
-      Store.hmset(`nodemail${ko.user}`, 'code', ko.code, 'expire', ko.expire, 'email', ko.email)
+      Store.hmset(`nodemail:${ko.user}`, 'code', ko.code, 'expire', ko.expire, 'email', ko.email)
     }
   })
 

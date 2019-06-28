@@ -104,7 +104,9 @@ export default {
     }
   },
   async asyncData(ctx) {
-    let {status, data: {code,list}} = await ctx.$axios.post('/order/getOrder')
+    let {status, data: {code,list}} = await ctx.$axios.post('/order/getOrder', {
+      page: 0
+    })
 
     console.log(list)
     if(status === 200 && code === 0) {

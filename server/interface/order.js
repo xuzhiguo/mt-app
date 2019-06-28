@@ -68,6 +68,9 @@ router.post('/create', async (ctx) => {
 
 // 获取订单
 router.post('/getOrder', async (ctx) => {
+  let {page} = ctx.request.body
+  const NUMBER = 8
+
   if(!ctx.isAuthenticated()) {
     // 没登录
     ctx.body = {
@@ -77,7 +80,7 @@ router.post('/getOrder', async (ctx) => {
     }
   } else {
     try {
-      let result = await Order.find()
+      let result = await Order.find().limit(NUMBER).skip(page*NUMBER)
       if(result) {
         ctx.body = {
           code: 0,
